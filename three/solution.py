@@ -83,6 +83,17 @@ for line_idx, number_span_rows in enumerate(number_spans):
 
 print(f"{part_one_sum=}")
 
+# do two different number spans lie adjacent?
+def _is_num_adjacent(span: tuple, num_span: tuple[tuple]) -> bool:
+    print(f"{span=}, span_c={np_grid[row_index][span[0]]}, {num_span=}, num={line_strings[num_span[0]][num_span[1][0]:num_span[1][1]]}")
+    one_col_is_adjacent = None
+    for col in range(num_span[1][0], num_span[1][1]):
+        print(f"{col=}, span[-]={span[0]} diff={abs(col - span[0])}")
+        if abs(col - span[0]) <= 1:
+            if one_col_is_adjacent is None:
+                one_col_is_adjacent = True
+    return bool(one_col_is_adjacent)
+
 part_two_sum = 0
 for line_idx, star_span_rows in enumerate(star_spans):
     for star_span in star_span_rows:
@@ -103,17 +114,6 @@ for line_idx, star_span_rows in enumerate(star_spans):
         nearby_number_spans.extend([(row_index, span) for span in number_spans[row_index]])
         nearby_number_spans.extend([(row_index+1, span) for span in number_spans[row_index+1]])
         print(f"{nearby_number_spans=}")
-
-        # do two different number spans lie adjacent?
-        def _is_num_adjacent(span: tuple, num_span: tuple[tuple]) -> bool:
-            print(f"{span=}, span_c={np_grid[row_index][span[0]]}, {num_span=}, num={line_strings[num_span[0]][num_span[1][0]:num_span[1][1]]}")
-            one_col_is_adjacent = None
-            for col in range(num_span[1][0], num_span[1][1]):
-                print(f"{col=}, span[-]={span[0]} diff={abs(col - span[0])}")
-                if abs(col - span[0]) <= 1:
-                    if one_col_is_adjacent is None:
-                        one_col_is_adjacent = True
-            return bool(one_col_is_adjacent)
 
         adjacent_number_spans = [span for span in nearby_number_spans if _is_num_adjacent(star_span, span)]
         adjacent_numbers = [line_strings[span[0]][span[1][0]:span[1][1]] for span in adjacent_number_spans]
